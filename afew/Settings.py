@@ -20,6 +20,7 @@ from __future__ import print_function, absolute_import, unicode_literals
 import os
 import re
 import functools
+from collections import OrderedDict
 
 try:
     # py3k
@@ -29,7 +30,11 @@ except ImportError:
 
 from .Filter import all_filters, register_filter
 
-settings = configparser.SafeConfigParser()
+tag_syncher = 'TagSyncher'
+
+settings = ConfigParser.SafeConfigParser()
+# preserve the capitalization of the keys.
+settings.optionxform = str
 settings.readfp(open(os.path.join(os.path.dirname(__file__), 'defaults', 'afew.config')))
 settings.read(os.path.join(os.environ.get('XDG_CONFIG_HOME',
                                           os.path.expanduser('~/.config')),
@@ -40,7 +45,7 @@ def get_filter_chain():
     filter_chain = []
 
     for section in settings.sections():
-        if section == 'global':
+        if section == 'global' or section == tag_syncher:
             continue
 
         match = section_re.match(section)
@@ -64,3 +69,20 @@ def get_filter_chain():
             filter_chain.append(klass(**dict(settings.items(section))))
 
     return filter_chain
+
+
+def get_tag_sync_rules():
+    if settings.has_section(tag_syncher) and settings.items(tag_syncher):
+        all_rules = OrderedDict()
+
+        # each line in the config file
+        for maildir, raw_rules in settings.items(tag_syncher):
+            rules = OrderedDict()
+            for rule in raw_rules.split():
+                tag, destination = rule.split(':')
+                rules[tag] = destination
+            all_rules[maildir] = rules
+
+        return all_rules
+    else:
+        raise NameError('No rules for synching your tags have been defined.')
