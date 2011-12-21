@@ -2,8 +2,9 @@ About
 =====
 
 afew is an initial tagging script for notmuch mail:
- * http://notmuchmail.org/
- * http://notmuchmail.org/initial_tagging/
+
+* http://notmuchmail.org/
+* http://notmuchmail.org/initial_tagging/
 
 Its basic task is to provide automatic tagging each time new mail is registered
 with notmuch. In a classic setup, you might call it after 'notmuch new' in an
@@ -15,7 +16,8 @@ heavy magic in order to /learn/ how to initially tag your mails based on their
 content.
 
 fyi: afew plays nicely with alot, a GUI for notmuch mail ;)
- * https://github.com/pazz/alot
+
+* https://github.com/pazz/alot
 
 
 Features
@@ -38,13 +40,13 @@ Installation
 
 You'll need dbacl for the text classification:
 
-# aptitude install dbacl
+    # aptitude install dbacl
 
 And I'd like to suggest to install afew as your unprivileged user.
 If you do, make sure ~/.local/bin is in your path.
 
-$ python setup.py install --prefix=~/.local
-$ mkdir -p ~/.config/afew ~/.local/share/afew/categories
+    $ python setup.py install --prefix=~/.local
+    $ mkdir -p ~/.config/afew ~/.local/share/afew/categories
 
 
 Configuration
@@ -52,13 +54,14 @@ Configuration
 
 Make sure that ~/.notmuch-config reads:
 
-~~~ snip ~~~
+```
 [new]
 tags=new
-~~~ snip ~~~
+```
 
 Put a list of filters into ~/.config/afew/config:
-~~~ snip ~~~
+
+```
 # This is the default filter chain
 [SpamFilter]
 [ClassifyingFilter]
@@ -66,13 +69,14 @@ Put a list of filters into ~/.config/afew/config:
 [ListMailsFilter]
 [ArchiveSentMailsFilter]
 [InboxFilter]
-~~~ snip ~~~
+```
 
 
 
 Commandline help
 ================
 
+```
 $ afew --help
 Usage: afew [options] [--] [query]
 
@@ -115,7 +119,7 @@ Options:
     -T DAYS, --reference-set-timeframe=DAYS
                         do not use mails older than DAYS days [default: 30]
     -v, --verbose       be more verbose, can be given multiple times
-
+```
 
 
 Boring stuff
@@ -123,20 +127,20 @@ Boring stuff
 
 Simulation
 ----------
-Adding --dry-run to any --tag action prevents modification of the
-notmuch db. Add some -vv goodness to see some action.
+Adding `--dry-run` to any `--tag` action prevents modification of the
+notmuch db. Add some `-vv` goodness to see some action.
 
 
 Initial tagging
 ---------------
 Basic tagging stuff requires no configuration, just run
 
-$ afew --tag --new
+    $ afew --tag --new
 
 To do this automatically you can add the following hook into your
 ~/.offlineimaprc:
 
-postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
+    postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
 
 
 Tag filters
@@ -159,39 +163,39 @@ The real deal
 
 Let's train on an existing tag 'spam':
 
-$ afew --learn spam -- tag:spam
+    $ afew --learn spam -- tag:spam
 
 Let's build the reference category. This is important to reduce the
 false positive rate. This may take a while...
 
-$ afew --update-reference
+    $ afew --update-reference
 
 And now let's create a new tag from an arbitrary query result:
 
-$ afew -vv --learn sourceforge -- sourceforge
+    $ afew -vv --learn sourceforge -- sourceforge
 
 Let's see how good the classification is:
 
-$ afew --classify -- tag:inbox and not tag:killed
-Sergio López <slpml@sinrega.org> (2011-10-08) (bug-hurd inbox lists unread) --> no match
-Patrick Totzke <reply+i-1840934-9a702d09342dca2b120126b26b008d0deea1731e@reply.github.com> (2011-10-08) (alot inbox lists) --> alot
-[...]
+    $ afew --classify -- tag:inbox and not tag:killed
+    Sergio López <slpml@sinrega.org> (2011-10-08) (bug-hurd inbox lists unread) --> no match
+    Patrick Totzke <reply+i-1840934-9a702d09342dca2b120126b26b008d0deea1731e@reply.github.com> (2011-10-08) (alot inbox lists) --> alot
+    [...]
 
 As soon as you trained some categories, afew will automatically
 tag your new mails using the classifier. If you want to disable this
 feature, either use the --enable-filters option to override the default
 set of filters or remove the files in your afew state dir:
 
-$ ls ~/.local/share/afew/categories
-alot juggling  reference_category  sourceforge  spam
+    $ ls ~/.local/share/afew/categories
+    alot juggling  reference_category  sourceforge  spam
 
 You need to update the category files periodically. I'd suggest to run
 
-$ afew --update
+    $ afew --update
 
 on a weekly and
 
-$ afew --update-reference
+    $ afew --update-reference
 
 on a monthly basis.
 
