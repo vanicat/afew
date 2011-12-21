@@ -35,7 +35,7 @@ mail_mover = 'MailMover'
 move_folders = 'folders'
 move_age = 'max_age'
 
-settings = ConfigParser.SafeConfigParser()
+settings = configparser.SafeConfigParser()
 # preserve the capitalization of the keys.
 settings.optionxform = str
 settings.readfp(open(os.path.join(os.path.dirname(__file__), 'defaults', 'afew.config')))
