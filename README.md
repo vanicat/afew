@@ -26,12 +26,12 @@ Features
 * text classification, magic tags aka the mailing list without server
 * spam handling (flush all tags, add spam)
 * killed thread handling
-* tags posts to lists with lists, $list-id
+* tags posts to lists with `lists`, `$list-id`
 * autoarchives mails sent from you
-* catchall -> remove new, add inbox
-* can operate on new messages [default], --all messages or on custom
+* catchall -> remove `new`, add `inbox`
+* can operate on new messages [default], `--all` messages or on custom
   query results
-* has a --dry-run mode for safe testing
+* has a `--dry-run` mode for safe testing
 * works with both python2.7 and python3.2
 
 
@@ -43,7 +43,7 @@ You'll need dbacl for the text classification:
     # aptitude install dbacl
 
 And I'd like to suggest to install afew as your unprivileged user.
-If you do, make sure ~/.local/bin is in your path.
+If you do, make sure `~/.local/bin` is in your path.
 
     $ python setup.py install --prefix=~/.local
     $ mkdir -p ~/.config/afew ~/.local/share/afew/categories
@@ -52,14 +52,14 @@ If you do, make sure ~/.local/bin is in your path.
 Configuration
 =============
 
-Make sure that ~/.notmuch-config reads:
+Make sure that `~/.notmuch-config` reads:
 
 ```
 [new]
 tags=new
 ```
 
-Put a list of filters into ~/.config/afew/config:
+Put a list of filters into `~/.config/afew/config`:
 
 ```
 # This is the default filter chain
@@ -152,7 +152,7 @@ mailing list magic...
 
 The tag filter concept allows you to easily extend afew's tagging
 abilities by writing your own filters. Take a look at the default
-configuration file (afew/defaults/afew.config) for a list of
+configuration file (`afew/defaults/afew.config`) for a list of
 available filters and how to enable filters and create customized
 filter types.
 
@@ -161,7 +161,7 @@ filter types.
 The real deal
 =============
 
-Let's train on an existing tag 'spam':
+Let's train on an existing tag `spam`:
 
     $ afew --learn spam -- tag:spam
 
@@ -183,7 +183,7 @@ Let's see how good the classification is:
 
 As soon as you trained some categories, afew will automatically
 tag your new mails using the classifier. If you want to disable this
-feature, either use the --enable-filters option to override the default
+feature, either use the `--enable-filters` option to override the default
 set of filters or remove the files in your afew state dir:
 
     $ ls ~/.local/share/afew/categories
