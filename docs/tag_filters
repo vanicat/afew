@@ -28,7 +28,7 @@ Let's say you like the SpamFilter, but it is way too polite
 
  2. Create a new type...
 
-    ~~~snip~~~    
+    ~~~snip~~~
     [ShitFilter(SpamFilter)]
     message = I hatez teh spam!
     ~~~snip~~~
@@ -87,7 +87,7 @@ folder_transforms = <transformation rules>
    transformed from the tag it is to be transformed into.
  * The default is to transform to folder names.
  * You may use the rules e.g. to transform the name of your 'Junk' folder into your
-   'spam' tag or fix capitalization of your draft and sent folder: 
+   'spam' tag or fix capitalization of your draft and sent folder:
     ~~~snip~~~
     folder transforms = Junk:spam Drafts:draft Sent:sent
     ~~~snip~~~
@@ -107,7 +107,7 @@ maildir_separator = <sep>
    [...]
    ~~~snip~~~
    the mails in your afew folder will be tagged with 'devel' and 'afew'.
-   
+
    If instead your hierarchy is split by a more conventional '/' or any other
    divider
    ~~~snip~~~
