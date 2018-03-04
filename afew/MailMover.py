@@ -73,6 +73,8 @@ class MailMover(Database):
                     try:
                         shutil.copy2(fname, self.get_new_name(fname, destination))
                         to_delete_fnames.append(fname)
+                    except shutil.SameFileError:
+                        continue
                     except shutil.Error as e:
                         # this is ugly, but shutil does not provide more
                         # finely individuated errors
